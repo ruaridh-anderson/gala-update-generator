@@ -1,42 +1,112 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+.grfc-header {
+  background-color: #710037;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  flex-wrap: wrap;
+  border-radius: 6px 6px 0 0;
+}
+
+.grfc-logo {
+  height: 50px;
+  margin-right: 1rem;
+}
+
+.grfc-header h1 {
+  flex: 1;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.grfc-header nav button {
+  margin-left: 0.5rem;
+  background: transparent;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.grfc-header nav button.active,
+.grfc-header nav button:hover {
+  text-decoration: underline;
+}
+
+.container {
+  font-family: 'Segoe UI', sans-serif;
   padding: 2rem;
-  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+h2, h3 {
+  color: #710037;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+input, select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
-.card {
-  padding: 2em;
+.btn {
+  background-color: #710037;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  margin-top: 1rem;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.read-the-docs {
-  color: #888;
+.btn:hover {
+  background-color: #5a002c;
+}
+
+.btn-small {
+  margin-top: 0.3rem;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.btn-small:hover {
+  background-color: #ddd;
+}
+
+.form-grid {
+  color: black;
+}
+
+.output-box {
+  background-color: #f9f9f9;
+  border-left: 4px solid #710037;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  border-radius: 6px;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li {
+  margin: 0.3rem 0;
 }
