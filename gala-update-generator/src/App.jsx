@@ -14,6 +14,37 @@ const eventPresets = [
   "Substitution"
 ];
 
+const eventTemplates = {
+  Try: [
+    "{player} touches down after a brilliant team move!",
+    "{player} breaks the line and scores!",
+    "TRY! {player} finishes it off under the posts!",
+    "{player} powers over the line to score!"
+  ],
+  Conversion: [
+    "{player} slots the conversion with ease.",
+    "No mistake from {player}, the kick is good.",
+    "{player} adds the extras from a tough angle!",
+    "{player}'s conversion is good."
+  ],
+  Penalty: [
+    "{player} nails the penalty from distance.",
+    "Three more for Gala as {player} keeps the scoreboard ticking.",
+    "{player} converts the penalty — cool as you like.",
+    "Pressure? What pressure. {player} gets the 3 points."
+  ],
+  YellowCard: [
+    "{player} is shown yellow — 10 in the bin.",
+    "Off to the sin bin goes {player} — yellow card given.",
+    "{player} heads off temporarily — yellow card."
+  ],
+  RedCard: [
+    "{player} has been sent off — red card.",
+    "Dismissed! {player} sees red.",
+    "Red card for {player} — Gala down a man."
+  ]
+};
+
 export default function App() {
   const [page, setPage] = useState("setup");
   const [minute, setMinute] = useState("");
@@ -24,6 +55,7 @@ export default function App() {
   const [tone, setTone] = useState(toneOptions[0]);
   const [includeHashtags, setIncludeHashtags] = useState(true);
   const [output, setOutput] = useState("");
+  const [autoTemplate, setAutoTemplate] = useState(true);
 
   const [squad, setSquad] = useState(() => {
     const saved = localStorage.getItem("galaSquad");
@@ -48,12 +80,20 @@ export default function App() {
     localStorage.setItem("galaMatchDetails", JSON.stringify(matchDetails));
   }, [matchDetails]);
 
+  const getTemplate = () => {
+    const templates = eventTemplates[event] || [];
+    const chosen = templates[Math.floor(Math.random() * templates.length)] || "{player} makes an impact.";
+    return chosen.replace("{player}", player);
+  };
+
   const generateUpdate = () => {
     const now = new Date();
     const timestamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     let base = `**${minute || timestamp}' | ${event.toUpperCase()} | Gala RFC vs ${matchDetails.opponent}**`;
 
-    if (player) base += `\n${player} ${description ? description : "makes the difference!"}`;
+    const line = autoTemplate && player && eventTemplates[event] ? getTemplate() : `${player} ${description || "makes the difference!"}`;
+
+    if (player || description) base += `\n${line}`;
     if (score) base += `\n**${score}**`;
 
     if (tone === "Excited") base += `\n_The Maroons are flying!_`;
@@ -122,10 +162,11 @@ export default function App() {
             <div><label>Minute:</label><input value={minute} onChange={e => setMinute(e.target.value)} placeholder="e.g. 52" /></div>
             <div><label>Event:</label><select value={event} onChange={e => setEvent(e.target.value)}>{eventPresets.map(evt => <option key={evt}>{evt}</option>)}</select></div>
             <div><label>Player(s):</label><input value={player} onChange={e => setPlayer(e.target.value)} placeholder="Name(s)" /></div>
-            <div><label>Description:</label><input value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. bursts through the line" /></div>
+            <div><label>Description (optional):</label><input value={description} onChange={e => setDescription(e.target.value)} placeholder="if not using auto" /></div>
             <div><label>Score:</label><input value={score} onChange={e => setScore(e.target.value)} placeholder="Gala 26 - 21 Stirling County" /></div>
             <div><label>Tone:</label><select value={tone} onChange={e => setTone(e.target.value)}>{toneOptions.map(t => <option key={t}>{t}</option>)}</select></div>
             <div className="checkbox"><label><input type="checkbox" checked={includeHashtags} onChange={() => setIncludeHashtags(!includeHashtags)} /> Include hashtags</label></div>
+            <div className="checkbox"><label><input type="checkbox" checked={autoTemplate} onChange={() => setAutoTemplate(!autoTemplate)} /> Use automatic templates</label></div>
           </div>
           <button className="btn" onClick={generateUpdate}>Generate Update</button>
           {output && (<div className="output-box"><pre>{output}</pre><button className="btn-small" onClick={copyToClipboard}>Copy to Clipboard</button></div>)}
